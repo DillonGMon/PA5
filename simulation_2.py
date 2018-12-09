@@ -1,5 +1,5 @@
-from network import Router, Host
-from link import Link, LinkLayer
+from network_2 import Router, Host
+from link_2 import Link, LinkLayer
 import threading
 from time import sleep
 import sys
