@@ -1,5 +1,5 @@
-from network import Router, Host
-from link import Link, LinkLayer
+from network_3 import Router, Host
+from link_3 import Link, LinkLayer
 import threading
 from time import sleep
 import sys
@@ -7,7 +7,7 @@ from copy import deepcopy
 
 ## configuration parameters
 router_queue_size = 0  # 0 means unlimited
-simulation_time = 10  # give the network sufficient time to execute transfers
+simulation_time = 15  # give the network sufficient time to execute transfers
 
 if __name__ == '__main__':
     object_L = [] # keeps track of objects, so we can kill their threads at the end
@@ -63,7 +63,7 @@ if __name__ == '__main__':
 
     router_d = Router(name='RD',
 
-                      intf_capacity_L=[500, 500, 500],
+                      intf_capacity_L=[500, 100, 500],
                       encap_tbl_D=encap_tbl_D,
                       frwd_tbl_D=frwd_tbl_D,
                       decap_tbl_D=decap_tbl_D,
@@ -93,18 +93,19 @@ if __name__ == '__main__':
         t.start()
     
     # create some send events
-    priority = i=2
-    host_1.udt_send('H3', 'MESSAGE_FROM_H1', priority)
+    for x in range(3):
+        priority = 0
+        host_1.udt_send('H3', 'MESSAGE_'+str(x)+'_FROM_H1', priority)
 
-    print("Sending message: 'MESSAGE_FROM_H1'")
-    print("To: H3 From H1.")
-    print("With Priority: %d." % priority)
+        print("Sending message: 'MESSAGE_%d_FROM_H1'" % x)
+        print("To: H3 From H1.")
+        print("With Priority: %d." % priority)
 
-    host_2.udt_send('H3', 'MESSAGE_FROM_H2', priority)
+        host_2.udt_send('H3', 'MESSAGE_'+str(x)+'_FROM_H2', priority)
 
-    print("Sending message: 'MESSAGE_FROM_H2'")
-    print("To: H3 From H2.")
-    print("With Priority: %d." % priority)
+        print("Sending message: 'MESSAGE_%d_FROM_H2'" % x)
+        print("To: H3 From H2.")
+        print("With Priority: %d." % priority)
 
     # give the network sufficient time to transfer all packets before quitting
     sleep(simulation_time)
